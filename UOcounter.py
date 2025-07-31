@@ -113,7 +113,7 @@ async def on_message(message):
     if any(char in message.content for char in chaos_keyword):
         await message.reply("わ わ わ わ わ わ ワールドカオス\n諸行 木暮 時雨 神楽 金剛山 翔襲叉")
     
-    if any(char in message.content for char in kan_keyword)
+    if any(char in message.content for char in kan_keyword):
         await message.reply("カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
     
     # 確保指令也能處理
