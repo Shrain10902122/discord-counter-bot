@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 import os
 from discord.utils import get
+import random
 
 # 用你自己的 Token
 TOKEN = 'MTQwMDQ2Njk3NDkzMjQ3MTkyOQ.GgBs86.37-wLOOB8THujYX_DnkRngeaYc-tu_6LWlMSjE'
@@ -38,12 +39,15 @@ def run_api():
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
 
+
 # 指定要找的字符（可以多個）
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['我婆','老婆','好可愛']
+pathetic_keyword = ['婆','可愛','舔']
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
-count = 0
+ki_keyword = ['ki', 'き']
+help_determine_keyword = ['沙知學姊幫我決定一下']
+divine_keyword = ['沙知學姊我今天的運勢']
 
 @bot.event
 async def on_ready():
@@ -51,28 +55,40 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    global count
     # 避免回應自己的訊息
     if message.author == bot.user:
         return
 
     # 檢查訊息是否包含特定字符
     if any(char in message.content for char in target_chars):
-        count += 1
-        await message.reply(f'{count}')
+        await message.reply(f'你再用驚嘆號試試看')
 
-    guild = bot.get_guild(1234567890) 
-    ga = get(message.guild.emojis, name="word_ga")
-    hopeless = get(message.guild.emojis, name="word_pathetic")
-    wake = get(message.guild.emojis, name="word_xing")
+    
     if any(char in message.content for char in pathetic_keyword):
-        await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
+        guild = bot.get_guild(1293206795677995038) 
+        if guild is not None:
+            ga = get(guild.emojis, name="word_ga")
+            hopeless = get(guild.emojis, name="word_pathetic")
+            wake = get(guild.emojis, name="word_xing")
+            await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
 
-    if any(char in message.content for char in sachi_keyword):
+    if any(char in message.content for char in help_determine_keyword):
+        choices = ["相信的心就是你的魔法", "哇哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
+        reply = random.choice(choices)
+        await message.reply(reply)
+    elif any(char in message.content for char in divine_keyword):
+        choices = ["大吉", "吉", "兇", "大凶"]
+        reply = random.choice(choices)
+        await message.reply(reply)
+    elif any(char in message.content for char in sachi_keyword):
         await message.reply(f'不許玩我')
 
     if any(char in message.content for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
+
+    if any(char in message.content for char in ki_keyword):
+        await message.reply(f'眩燿夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
+    
 
     # 確保指令也能處理
     await bot.process_commands(message)
