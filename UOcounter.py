@@ -1,11 +1,12 @@
 import threading
-from fastapi import FastAPI
-import uvicorn
+#from fastapi import FastAPI
+#import uvicorn
 import discord
 from discord.ext import commands
 import os
 from discord.utils import get
 import random
+import datetime
 
 # 用你自己的 Token
 TOKEN = 'MTQwMDQ2Njk3NDkzMjQ3MTkyOQ.GgBs86.37-wLOOB8THujYX_DnkRngeaYc-tu_6LWlMSjE'
@@ -16,7 +17,7 @@ intents.message_content = True
 
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
-
+'''
 app = FastAPI()
 
 @app.head("/")
@@ -39,8 +40,14 @@ def run_api():
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
 
-
+'''
 # 指定要找的字符（可以多個）
+TRIGGER_MSG = "沙知學姊"
+CANNED_REPLY = "はい〜"
+
+user_states = {}
+said_today = {}
+
 target_chars = ['!', '！', '﹗']
 pathetic_keyword = ['婆','可愛','舔']
 sachi_keyword = ['沙知']
@@ -63,7 +70,6 @@ async def on_message(message):
     if any(char in message.content for char in target_chars):
         await message.reply(f'你再用驚嘆號試試看')
 
-    
     if any(char in message.content for char in pathetic_keyword):
         guild = bot.get_guild(1293206795677995038) 
         if guild is not None:
@@ -72,16 +78,43 @@ async def on_message(message):
             wake = get(guild.emojis, name="word_xing")
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
 
-    if any(char in message.content for char in help_determine_keyword):
-        choices = ["相信的心就是你的魔法", "哇哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
-        reply = random.choice(choices)
-        await message.reply(reply)
-    elif any(char in message.content for char in divine_keyword):
-        choices = ["大吉", "吉", "兇", "大凶"]
-        reply = random.choice(choices)
-        await message.reply(reply)
+    user_id = message.author.id
+    if message.content == TRIGGER_MSG:
+        sent_msg = await message.reply(CANNED_REPLY)
+        user_states[user_id] = {
+            "canned_message_id": sent_msg.id,
+            "state": "awaiting"
+        }
+        return
     elif any(char in message.content for char in sachi_keyword):
         await message.reply(f'不許玩我')
+
+    if user_id in user_states and user_states[user_id]["state"] == "awaiting":
+        ref = message.reference
+        if ref and ref.message_id == user_states[user_id]["canned_message_id"]:
+            if message.content == '幫我決定':
+                choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
+                reply = random.choice(choices)
+                await message.reply(reply)
+                user_states.pop(user_id)
+            elif message.content == '今天的運勢':
+                today = datetime.date.today()
+
+                last_date = said_today.get(user_id)
+                print(last_date)
+
+                if last_date == today:
+                    await message.reply("你問過了啦 (ノ｀Д´)ノ")
+                else:
+                    said_today[user_id] = today
+                    choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+                    reply = random.choice(choices)
+                    await message.reply(reply)
+
+                user_states.pop(user_id)
+            else:
+                await message.reply("不要亂叫我")
+    
 
     if any(char in message.content for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
