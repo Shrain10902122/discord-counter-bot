@@ -13,6 +13,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 # 指定要找的字符（可以多個）
 target_chars = ['!', '！']
+count = 0
 
 @bot.event
 async def on_ready():
@@ -20,7 +21,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    global count = 0
+    global count
     # 避免回應自己的訊息
     if message.author == bot.user:
         return
