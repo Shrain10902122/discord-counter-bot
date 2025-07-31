@@ -42,9 +42,6 @@ if __name__ == "__main__":
 
 
 # 指定要找的字符（可以多個）
-TRIGGER_MSG = "沙知學姊"
-CANNED_REPLY = "はい〜"
-
 user_states = {}
 said_today = {}
 
@@ -64,6 +61,8 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
+    user_id = message.author.id
+
     # 檢查訊息是否包含特定字符
     if any(char in message.content for char in target_chars):
         await message.reply(f'你再用驚嘆號試試看')
@@ -75,45 +74,25 @@ async def on_message(message):
             hopeless = get(guild.emojis, name="word_pathetic")
             wake = get(guild.emojis, name="word_xing")
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
-
-    user_id = message.author.id
-    if message.content == TRIGGER_MSG:
-        sent_msg = await message.reply(CANNED_REPLY)
-        user_states[user_id] = {
-            "canned_message_id": sent_msg.id,
-            "state": "awaiting"
-        }
-        return
-
-    if any(char in message.content for char in sachi_keyword) and message.content != TRIGGER_MSG:
-        await message.reply(f'不許玩我')
-
-    if user_id in user_states and user_states[user_id]["state"] == "awaiting":
-        ref = message.reference
-        if ref and ref.message_id == user_states[user_id]["canned_message_id"]:
-            if message.content == '幫我決定':
-                choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
-                reply = random.choice(choices)
-                await message.reply(reply)
-                user_states.pop(user_id)
-            elif message.content == '今天的運勢':
-                today = datetime.date.today()
-
-                last_date = said_today.get(user_id)
-                print(last_date)
-
-                if last_date == today:
-                    await message.reply("你問過了啦 (ノ｀Д´)ノ")
-                else:
-                    said_today[user_id] = today
-                    choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
-                    reply = random.choice(choices)
-                    await message.reply(reply)
-
-                user_states.pop(user_id)
-            else:
-                await message.reply("不要亂叫我")
     
+    if message.content == "沙知學姊我今天的運勢" or message.content == "沙知學姐我今天的運勢":
+        today = datetime.date.today()
+
+        last_date = said_today.get(user_id)
+
+        if last_date == today:
+            await message.reply("你問過了啦 (ノ｀Д´)ノ")
+        else:
+            said_today[user_id] = today
+            choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+            reply = random.choice(choices)
+            await message.reply(reply)
+    elif message.content == '沙知學姊幫我決定一下' or message.content == '沙知學姐幫我決定一下':
+        choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
+        reply = random.choice(choices)
+        await message.reply(reply)
+    elif any(char in message.content for char in sachi_keyword):
+        await message.reply(f'不許玩我')
 
     if any(char in message.content for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
