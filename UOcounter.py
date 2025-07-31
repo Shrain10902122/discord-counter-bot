@@ -1,6 +1,6 @@
 import threading
-#from fastapi import FastAPI
-#import uvicorn
+from fastapi import FastAPI
+import uvicorn
 import discord
 from discord.ext import commands
 import os
@@ -17,7 +17,7 @@ intents.message_content = True
 
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
-'''
+
 app = FastAPI()
 
 @app.head("/")
@@ -40,7 +40,7 @@ def run_api():
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
 
-'''
+
 # 指定要找的字符（可以多個）
 TRIGGER_MSG = "沙知學姊"
 CANNED_REPLY = "はい〜"
