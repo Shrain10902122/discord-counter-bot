@@ -56,6 +56,11 @@ old2_keyword = ["老二"]
 chaos_keyword = ["混沌"]
 kan_keyword = ["kan", "かん", "カン", "菅"]
 
+def is_url(text):
+    pattern = re.compile(
+        r'(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(/[^\s]*)?'
+    )
+    return bool(pattern.search(text))
 
 @bot.event
 async def on_ready():
@@ -104,7 +109,7 @@ async def on_message(message):
     if any(char in message.content for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
 
-    if any(char in message.content for char in ki_keyword):
+    if any(char in message.content for char in ki_keyword and not is_url(message.content)):
         await message.reply(f'眩燿夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
     
     if any(char in message.content for char in old2_keyword):
@@ -113,7 +118,7 @@ async def on_message(message):
     if any(char in message.content for char in chaos_keyword):
         await message.reply("わ わ わ わ わ わ ワールドカオス\n諸行 木暮 時雨 神楽 金剛山 翔襲叉")
     
-    if any(char in message.content for char in kan_keyword):
+    if any(char in message.content for char in kan_keyword and not is_url(message.content)):
         await message.reply("カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
     
     # 確保指令也能處理
