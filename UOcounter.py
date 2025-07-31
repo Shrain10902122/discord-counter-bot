@@ -46,13 +46,16 @@ user_states = {}
 said_today = {}
 
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['婆','可愛','舔']
+pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔...', '217', '57', '170', '557', 'l70', '201', '515']
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['ki', 'き']
 deter_keyword = ["幫我決定"]
 divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
+chaos_keyword = ["混沌"]
+kan_keyword = ["kan", "かん", "カン", "菅"]
+
 
 @bot.event
 async def on_ready():
@@ -107,6 +110,12 @@ async def on_message(message):
     if any(char in message.content for char in old2_keyword):
         await message.reply(f'你才老二你全家都老二')
 
+    if any(char in message.content for char in chaos_keyword):
+        await message.reply("わ わ わ わ わ わ ワールドカオス\n諸行 木暮 時雨 神楽 金剛山 翔襲叉")
+    
+    if any(char in message.content for char in kan_keyword)
+        await message.reply("カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
+    
     # 確保指令也能處理
     await bot.process_commands(message)
 
