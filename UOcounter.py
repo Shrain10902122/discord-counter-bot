@@ -53,8 +53,6 @@ pathetic_keyword = ['婆','可愛','舔']
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['ki', 'き']
-help_determine_keyword = ['沙知學姊幫我決定一下']
-divine_keyword = ['沙知學姊我今天的運勢']
 
 @bot.event
 async def on_ready():
@@ -86,7 +84,8 @@ async def on_message(message):
             "state": "awaiting"
         }
         return
-    elif any(char in message.content for char in sachi_keyword):
+
+    if any(char in message.content for char in sachi_keyword) and message.content != TRIGGER_MSG:
         await message.reply(f'不許玩我')
 
     if user_id in user_states and user_states[user_id]["state"] == "awaiting":
