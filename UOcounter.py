@@ -50,6 +50,8 @@ pathetic_keyword = ['婆','可愛','舔']
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['ki', 'き']
+deter_keyword = ["幫我決定"]
+divine_keyword = ["我今天的運勢"]
 
 @bot.event
 async def on_ready():
@@ -75,24 +77,25 @@ async def on_message(message):
             wake = get(guild.emojis, name="word_xing")
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
     
-    if message.content == "沙知學姊我今天的運勢" or message.content == "沙知學姐我今天的運勢":
-        today = datetime.date.today()
+    if any(char in message.content for char in sachi_keyword):
+        if any(char in message.content for char in divine_keyword):
+            today = datetime.date.today()
 
-        last_date = said_today.get(user_id)
+            last_date = said_today.get(user_id)
 
-        if last_date == today:
-            await message.reply("你問過了啦 (ノ｀Д´)ノ")
-        else:
-            said_today[user_id] = today
-            choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+            if last_date == today:
+                await message.reply("你問過了啦 (ノ｀Д´)ノ")
+            else:
+                said_today[user_id] = today
+                choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+                reply = random.choice(choices)
+                await message.reply(reply)
+        elif any(char in message.content for char in deter_keyword):
+            choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
             reply = random.choice(choices)
             await message.reply(reply)
-    elif message.content == '沙知學姊幫我決定一下' or message.content == '沙知學姐幫我決定一下':
-        choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
-        reply = random.choice(choices)
-        await message.reply(reply)
-    elif any(char in message.content for char in sachi_keyword):
-        await message.reply(f'不許玩我')
+        else:
+            await message.reply(f'不許玩我')
 
     if any(char in message.content for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
