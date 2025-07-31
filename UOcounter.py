@@ -52,6 +52,7 @@ banana_keyword = ['蕉']
 ki_keyword = ['ki', 'き']
 deter_keyword = ["幫我決定"]
 divine_keyword = ["我今天的運勢"]
+old2_keyword = ["老二"]
 
 @bot.event
 async def on_ready():
@@ -103,6 +104,8 @@ async def on_message(message):
     if any(char in message.content for char in ki_keyword):
         await message.reply(f'眩燿夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
     
+    if any(char in message.content for char in old2_keyword):
+        await message.reply(f'你才老二你全家都老二')
 
     # 確保指令也能處理
     await bot.process_commands(message)
