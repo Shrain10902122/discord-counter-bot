@@ -7,7 +7,6 @@ from discord.ext import commands, tasks
 import os
 from discord.utils import get
 import random
-import datetime
 import re
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -245,7 +244,8 @@ async def on_message(message):
     clean_text = strip_mentions(message.content)
 
     if channel_id == DIVINE_CHANNEL_ID:
-        today = datetime.date.today()
+        now = datetime.now(ZoneInfo("Asia/Taipeu"))
+        today = now.strftime("%m-%d")
 
         last_date = said_today.get(user_id)
 
