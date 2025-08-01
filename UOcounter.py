@@ -1,6 +1,6 @@
 import threading
-#from fastapi import FastAPI
-#import uvicorn
+from fastapi import FastAPI
+import uvicorn
 import discord
 from discord.ext import commands
 import os
@@ -8,11 +8,11 @@ from discord.utils import get
 import random
 import datetime
 import re
-'''
+
 if os.getenv("RENDER") != "true":  # 判斷是否在 Render 環境中
     from dotenv import load_dotenv
     load_dotenv()
-'''
+
 
 # 用你自己的 Token
 TOKEN = os.getenv("BOT_TOKEN")
@@ -23,7 +23,7 @@ intents.message_content = True
 
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
-'''
+
 app = FastAPI()
 
 @app.head("/")
@@ -44,7 +44,7 @@ def run_api():
     uvicorn.run(app, host="0.0.0.0", port=10000)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_api).start()'''
+    threading.Thread(target=run_api).start()
 
 DIVINE_CHANNEL_ID = 1400686378156687480
 
