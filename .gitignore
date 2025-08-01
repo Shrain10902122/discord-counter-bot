@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 虛擬環境
+venv/
+.env/
+.env.*
+
+# 編譯後的檔案
+*.so
+
+# Jupyter Notebook checkpoint
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# VSCode 設定
+.vscode/
+
+# logs
+*.log
+
+# Render 或其他平台的部署設定檔（如有）
+render.yaml
+
+# SQLite / local DB（如有）
+*.sqlite3
+
+# 私密設定檔
+config.json
+*.secret
+*.token
+
+# 忽略資料夾（視需要新增）
+logs/
+data/
+

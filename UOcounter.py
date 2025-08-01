@@ -1,6 +1,6 @@
 import threading
-from fastapi import FastAPI
-import uvicorn
+#from fastapi import FastAPI
+#import uvicorn
 import discord
 from discord.ext import commands
 import os
@@ -9,16 +9,19 @@ import random
 import datetime
 import re
 
-# 用你自己的 Token
-TOKEN = 'MTQwMDQ2Njk3NDkzMjQ3MTkyOQ.GgBs86.37-wLOOB8THujYX_DnkRngeaYc-tu_6LWlMSjE'
+if os.getenv("RENDER") != "true":  # 判斷是否在 Render 環境中
+    from dotenv import load_dotenv
+    load_dotenv()
 
+# 用你自己的 Token
+TOKEN = os.getenv("BOT_TOKEN")
 # 設定 intents
 intents = discord.Intents.default()
 intents.message_content = True
 
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
-
+'''
 app = FastAPI()
 
 @app.head("/")
@@ -39,25 +42,23 @@ def run_api():
     uvicorn.run(app, host="0.0.0.0", port=10000)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_api).start()
+    threading.Thread(target=run_api).start()'''
 
-
-# 指定要找的字符（可以多個）
 DIVINE_CHANNEL_ID = 1400686378156687480
 
 user_states = {}
 said_today = {}
 
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔...', '217', '57', '170', '557', 'l70', '201', '515']
+pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔…', '哦…', '217', '57', '170', '557', 'l70', '201', '515', '486']
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
-ki_keyword = ['ki', 'き']
+ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
 deter_keyword = ["幫我決定"]
 divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
 chaos_keyword = ["混沌"]
-kan_keyword = ["kan", "かん", "カン", "菅"]
+kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 
 def is_url(text):
     pattern = re.compile(
@@ -116,7 +117,7 @@ async def on_message(message):
         await message.reply(f'我老公怎麼你了')
 
     if any(char in message.content for char in ki_keyword) and not is_url(message.content):
-        await message.reply(f'眩燿夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
+        await message.reply(f'眩耀夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
     
     if any(char in message.content for char in old2_keyword):
         await message.reply(f'你才老二你全家都老二')
