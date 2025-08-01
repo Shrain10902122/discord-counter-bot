@@ -76,6 +76,7 @@ gay_keyword = ["甲"]
 jyajya_keyword = ["嘉", "伽"]
 hachyan_keyword = ["反田葉月", "哈醬"]
 
+
 def is_url(text):
     pattern = re.compile(
         r'(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(/[^\s]*)?'
@@ -324,6 +325,9 @@ async def on_message(message):
 
     if any(char in clean_text for char in hachyan_keyword):
         await message.reply(f'👏👏👏👏👏 sumimi最高')
+
+    if clean_text == "頑張るぞ":
+        await message.reply(f'ちぇすとー!')
 
     # 確保指令也能處理
     await bot.process_commands(message)
