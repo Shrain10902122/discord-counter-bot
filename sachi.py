@@ -244,7 +244,7 @@ async def on_message(message):
     clean_text = strip_mentions(message.content)
 
     if channel_id == DIVINE_CHANNEL_ID:
-        now = datetime.now(ZoneInfo("Asia/Taipeu"))
+        now = datetime.now(ZoneInfo("Asia/Taipei"))
         today = now.strftime("%m-%d")
 
         last_date = said_today.get(user_id)
