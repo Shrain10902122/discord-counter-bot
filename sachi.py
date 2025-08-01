@@ -1,18 +1,23 @@
 import threading
-from fastapi import FastAPI
-import uvicorn
+#from fastapi import FastAPI
+#import uvicorn
+
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import os
 from discord.utils import get
 import random
 import datetime
 import re
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
+from datetime import datetime, timedelta
+import asyncio
+from zoneinfo import ZoneInfo
 
 if os.getenv("RENDER") != "true":  # 判斷是否在 Render 環境中
     from dotenv import load_dotenv
     load_dotenv()
-
 
 # 用你自己的 Token
 TOKEN = os.getenv("BOT_TOKEN")
@@ -23,7 +28,8 @@ intents.message_content = True
 
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
-
+JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
+'''
 app = FastAPI()
 
 @app.head("/")
@@ -45,8 +51,9 @@ def run_api():
 
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
-
+'''
 DIVINE_CHANNEL_ID = 1400686378156687480
+BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
 user_states = {}
 said_today = {}
@@ -68,9 +75,24 @@ def is_url(text):
     )
     return bool(pattern.search(text))
 
+char_birthdays = {
+    "千歌": "08-01"
+}
+
+async def send_birthday_messages():
+    now = datetime.now(ZoneInfo("Asia/Tokyo"))
+    today = now.strftime("%m-%d")
+    for name, birthday in birthdays.items():
+        if birthday == today:
+            channel = bot.get_channel(BIRTHDAY_CHANNEL_ID)
+            if channel:
+                await channel.send(f"🎉 今天是{name}的生日，お誕生日おめでとう！🎂")
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
+    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=17, minute=30, timezone=ZoneInfo("Asia/Tokyo")))
+    JP_scheduler.start()
 
 @bot.event
 async def on_message(message):
