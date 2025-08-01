@@ -7,6 +7,7 @@ import os
 from discord.utils import get
 import random
 import datetime
+import re
 
 # 用你自己的 Token
 TOKEN = 'MTQwMDQ2Njk3NDkzMjQ3MTkyOQ.GgBs86.37-wLOOB8THujYX_DnkRngeaYc-tu_6LWlMSjE'
