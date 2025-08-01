@@ -8,13 +8,15 @@ from discord.utils import get
 import random
 import datetime
 import re
-
+'''
 if os.getenv("RENDER") != "true":  # 判斷是否在 Render 環境中
     from dotenv import load_dotenv
     load_dotenv()
+'''
 
 # 用你自己的 Token
 TOKEN = os.getenv("BOT_TOKEN")
+print(TOKEN)
 # 設定 intents
 intents = discord.Intents.default()
 intents.message_content = True
