@@ -1,6 +1,6 @@
 import threading
-#from fastapi import FastAPI
-#import uvicorn
+from fastapi import FastAPI
+import uvicorn
 
 import discord
 from discord.ext import commands, tasks
@@ -29,7 +29,7 @@ intents.message_content = True
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
 JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
-'''
+
 app = FastAPI()
 
 @app.head("/")
@@ -51,7 +51,7 @@ def run_api():
 
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
-'''
+
 DIVINE_CHANNEL_ID = 1400686378156687480
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
