@@ -1,6 +1,4 @@
 import threading
-from fastapi import FastAPI
-import uvicorn
 
 import discord
 from discord.ext import commands, tasks
@@ -29,28 +27,6 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
 TPE_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Taipei"))
-
-app = FastAPI()
-
-@app.head("/")
-def read_root():
-    return {"status": "bot is running"}
-
-def run_api():
-    uvicorn.run(app, host="0.0.0.0", port=10000)
-
-if __name__ == "__main__":
-    threading.Thread(target=run_api).start()
-
-@app.get("/")
-def read_root():
-    return {"status": "bot is running"}
-
-def run_api():
-    uvicorn.run(app, host="0.0.0.0", port=10000)
-
-if __name__ == "__main__":
-    threading.Thread(target=run_api).start()
 
 MY_USER_ID = 617673911940808706
 
