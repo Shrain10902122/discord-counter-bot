@@ -74,6 +74,7 @@ kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 graduate_keyword = ["畢業", "卒業"]
 gay_keyword = ["甲"]
 jyajya_keyword = ["嘉", "伽"]
+hachyan_keyword = ["反田葉月", "哈醬"]
 
 def is_url(text):
     pattern = re.compile(
@@ -321,6 +322,8 @@ async def on_message(message):
     if any(char in clean_text for char in jyajya_keyword):
         await message.reply(f'310110199701093724')
 
+    if any(char in clean_text for char in hachyan_keyword):
+        await message.reply(f'👏👏👏👏👏 sumimi最高')
 
     # 確保指令也能處理
     await bot.process_commands(message)
