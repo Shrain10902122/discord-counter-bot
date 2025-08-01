@@ -56,6 +56,7 @@ MY_USER_ID = 617673911940808706
 
 NORMAL_CHANNEL_ID = 1293206795677995041
 DIVINE_CHANNEL_ID = 1400686378156687480
+DETER_CHANNEL_ID = 1400885561186586826
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
 user_states = {}
@@ -66,10 +67,11 @@ pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔…', '哦…', '2
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
-deter_keyword = ["幫我決定"]
+deter_keyword = ["決定"]
 divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
+graduate_keyword = ["畢業", "卒業"]
 
 def is_url(text):
     pattern = re.compile(
@@ -125,6 +127,7 @@ char_birthdays = {
     "西木野真姬": "04-19",
     "八岐大蛇進藤天音": "04-20",
     "前田・147・腟壓・酒豪・城之內・佳織里": "04-25",
+    "我老公 大香蕉": "04-30",ㄗ
     "澀谷香音": "05-01",
     "西木野真姬聲優 Pile": "05-02",
     "大西亞玖璃聲優 上原步夢": "05-02",
@@ -155,11 +158,11 @@ char_birthdays = {
     "津島善子": "07-13",
     "唐可可": "07-17",
     "藪島朱音": "07-18",
-    "矢澤妮可": "07-22",
-    "內田彩": "07-23",
+    "宇宙No.1偶像 矢澤妮可": "07-22",
+    "南小鳥聲優 內田彩": "07-23",
     "鈴木愛奈": "07-23",
     "高海千歌": "08-01",
-    "高坂穗乃果": "08-03",
+    "果皇 高坂穗乃果": "08-03",
     "法元明菜": "08-05",
     "鬼塚夏美": "08-07",
     "優木雪菜": "08-08",
@@ -268,6 +271,13 @@ async def on_message(message):
             reply = random.choice(choices)
             await message.reply(reply)
         return
+        
+    if channel_id == DETER_CHANNEL_ID:
+        if any(char in message.content for char in deter_keyword):
+            choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
+            reply = random.choice(choices)
+            await message.reply(reply)
+        return
 
     # 檢查訊息是否包含特定字符
     if any(char in clean_text for char in target_chars):
@@ -282,13 +292,8 @@ async def on_message(message):
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
     
     if any(char in clean_text for char in sachi_keyword):
-        if any(char in message.content for char in deter_keyword):
-            choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
-            reply = random.choice(choices)
-            await message.reply(reply)
-        else:
-            if user_id != MY_USER_ID:
-                await message.reply(f'不許玩我')
+        if user_id != MY_USER_ID:
+            await message.reply(f'不許玩我')
 
     if any(char in clean_text for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
@@ -304,6 +309,10 @@ async def on_message(message):
     
     if any(char in clean_text for char in kan_keyword) and not is_url(message.content):
         await message.reply("カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
+
+    if any(char in clean_text for char in graduate_keyword):
+        await message.reply("がんばれがんばれできるできる\n繋がり繋がり繋がりタイガー\n卒業卒業卒業後\nワンチャンあるだろ？いや、ないよ\nジャージャージャージャー友達で\n好き好き好き好きずっと好き\nリンクラのID教えてよ\n迷惑長文辞めておけ")
+    
     
     # 確保指令也能處理
     await bot.process_commands(message)
