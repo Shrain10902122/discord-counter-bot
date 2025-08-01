@@ -42,6 +42,8 @@ if __name__ == "__main__":
 
 
 # 指定要找的字符（可以多個）
+DIVINE_CHANNEL_ID = 1400686378156687480
+
 user_states = {}
 said_today = {}
 
@@ -73,12 +75,27 @@ async def on_message(message):
         return
 
     user_id = message.author.id
+    channel_id = message.channel.id
+
+    if channel_id == DIVINE_CHANNEL_ID:
+        today = datetime.date.today()
+
+        last_date = said_today.get(user_id)
+
+        if last_date == today:
+            await message.reply("你問過了啦 (ノ｀Д´)ノ")
+        else:
+            said_today[user_id] = today
+            choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+            reply = random.choice(choices)
+            await message.reply(reply)
+        return
 
     # 檢查訊息是否包含特定字符
     if any(char in message.content for char in target_chars):
         await message.reply(f'你再用驚嘆號試試看')
 
-    if any(char in message.content for char in pathetic_keyword):
+    if any(char in message.content for char in pathetic_keyword) and not is_url(message.content):
         guild = bot.get_guild(1293206795677995038) 
         if guild is not None:
             ga = get(guild.emojis, name="word_ga")
@@ -87,19 +104,7 @@ async def on_message(message):
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
     
     if any(char in message.content for char in sachi_keyword):
-        if any(char in message.content for char in divine_keyword):
-            today = datetime.date.today()
-
-            last_date = said_today.get(user_id)
-
-            if last_date == today:
-                await message.reply("你問過了啦 (ノ｀Д´)ノ")
-            else:
-                said_today[user_id] = today
-                choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
-                reply = random.choice(choices)
-                await message.reply(reply)
-        elif any(char in message.content for char in deter_keyword):
+        if any(char in message.content for char in deter_keyword):
             choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
             reply = random.choice(choices)
             await message.reply(reply)
