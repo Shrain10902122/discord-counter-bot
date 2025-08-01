@@ -72,6 +72,7 @@ divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 graduate_keyword = ["畢業", "卒業"]
+gay_keyword = ["甲"]
 
 def is_url(text):
     pattern = re.compile(
@@ -127,7 +128,7 @@ char_birthdays = {
     "西木野真姬": "04-19",
     "八岐大蛇進藤天音": "04-20",
     "前田・147・腟壓・酒豪・城之內・佳織里": "04-25",
-    "我老公 大香蕉": "04-30",ㄗ
+    "我老公 大香蕉": "04-30",
     "澀谷香音": "05-01",
     "西木野真姬聲優 Pile": "05-02",
     "大西亞玖璃聲優 上原步夢": "05-02",
@@ -313,7 +314,9 @@ async def on_message(message):
     if any(char in clean_text for char in graduate_keyword):
         await message.reply("がんばれがんばれできるできる\n繋がり繋がり繋がりタイガー\n卒業卒業卒業後\nワンチャンあるだろ？いや、ないよ\nジャージャージャージャー友達で\n好き好き好き好きずっと好き\nリンクラのID教えてよ\n迷惑長文辞めておけ")
     
-    
+    if any(char in clean_text for char in gay_keyword):
+        await message.reply(f'@藤島食物語')
+
     # 確保指令也能處理
     await bot.process_commands(message)
 
