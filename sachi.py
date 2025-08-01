@@ -82,7 +82,7 @@ char_birthdays = {
 async def send_birthday_messages():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
     today = now.strftime("%m-%d")
-    for name, birthday in birthdays.items():
+    for name, birthday in char_birthdays.items():
         if birthday == today:
             channel = bot.get_channel(BIRTHDAY_CHANNEL_ID)
             if channel:
@@ -91,7 +91,7 @@ async def send_birthday_messages():
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=17, minute=40, timezone=ZoneInfo("Asia/Tokyo")))
+    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=17, minute=45, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
 
 @bot.event
