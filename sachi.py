@@ -28,6 +28,7 @@ intents.message_content = True
 # 建立 bot
 bot = commands.Bot(command_prefix='!', intents=intents)
 JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
+TPE_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Taipei"))
 
 app = FastAPI()
 
@@ -51,7 +52,9 @@ def run_api():
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
     
+MY_USER_ID = 617673911940808706
 
+NORMAL_CHANNEL_ID = 1293206795677995041
 DIVINE_CHANNEL_ID = 1400686378156687480
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
@@ -66,7 +69,6 @@ ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
 deter_keyword = ["幫我決定"]
 divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
-chaos_keyword = ["混沌"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 
 def is_url(text):
@@ -75,9 +77,8 @@ def is_url(text):
     )
     return bool(pattern.search(text))
 
-def strip_mentions(text):
-    # 去掉 <@1234567890> 和 <@!1234567890>
-    return re.sub(r"<@!?\d+>", "", text)
+def remove_angle_brackets_content(text):
+    return re.sub(r"<[^>]*>", "", text)
 
 char_birthdays = {
     "ブッブーですわ! 黑澤黛雅": "01-01",
@@ -226,11 +227,21 @@ async def send_birthday_messages():
             if channel:
                 await channel.send(f"🎉今天是{name}的生日，お誕生日おめでとう！🎂")
 
+async def rain_clock():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        rain = await bot.fetch_user(497031137177239563)
+        if rain:
+            await channel.send(f"{rain.mention}快去寫學妹們的文")
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
     JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
+
+    TPE_scheduler.add_job(rain_clock, CronTrigger(hour=21, minute=0, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.start()
 
 @bot.event
 async def on_message(message):
@@ -241,7 +252,7 @@ async def on_message(message):
     user_id = message.author.id
     channel_id = message.channel.id
 
-    clean_text = strip_mentions(message.content)
+    clean_text = remove_angle_brackets_content(message.content):
 
     if channel_id == DIVINE_CHANNEL_ID:
         now = datetime.now(ZoneInfo("Asia/Taipei"))
@@ -276,7 +287,8 @@ async def on_message(message):
             reply = random.choice(choices)
             await message.reply(reply)
         else:
-            await message.reply(f'不許玩我')
+            if user_id != MY_USER_ID:
+                await message.reply(f'不許玩我')
 
     if any(char in clean_text for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
@@ -287,7 +299,7 @@ async def on_message(message):
     if any(char in clean_text for char in old2_keyword):
         await message.reply(f'你才老二你全家都老二')
 
-    if any(char in clean_text for char in chaos_keyword):
+    if clean_text == "哇":
         await message.reply("わ わ わ わ わ わ ワールドカオス\n諸行 木暮 時雨 神楽 金剛山 翔襲叉")
     
     if any(char in clean_text for char in kan_keyword) and not is_url(message.content):
