@@ -1,6 +1,6 @@
 import threading
-from fastapi import FastAPI
-import uvicorn
+#from fastapi import FastAPI
+#import uvicorn
 
 import discord
 from discord.ext import commands, tasks
@@ -29,7 +29,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
 TPE_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Taipei"))
-
+'''
 app = FastAPI()
 
 @app.head("/")
@@ -51,7 +51,7 @@ def run_api():
 
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
-    
+    '''
 MY_USER_ID = 617673911940808706
 
 NORMAL_CHANNEL_ID = 1293206795677995041
@@ -357,6 +357,11 @@ async def on_message(message):
 
     if clean_text == "頑張るぞ":
         await message.reply(f'ちぇすとー!')
+
+    if "沙漏" in clean_text:
+        guild = bot.get_guild(1293206795677995038) 
+        sticker = get(guild.stickers, name="破沙漏")
+        await message.reply(stickers=[sticker])
 
     # 確保指令也能處理
     await bot.process_commands(message)
