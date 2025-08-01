@@ -252,7 +252,7 @@ async def on_message(message):
     user_id = message.author.id
     channel_id = message.channel.id
 
-    clean_text = remove_angle_brackets_content(message.content):
+    clean_text = remove_angle_brackets_content(message.content)
 
     if channel_id == DIVINE_CHANNEL_ID:
         now = datetime.now(ZoneInfo("Asia/Taipei"))
