@@ -1,6 +1,6 @@
 import threading
-#from fastapi import FastAPI
-#import uvicorn
+from fastapi import FastAPI
+import uvicorn
 
 import discord
 from discord.ext import commands, tasks
@@ -29,7 +29,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 JP_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tokyo"))
 TPE_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Taipei"))
-'''
+
 app = FastAPI()
 
 @app.head("/")
@@ -51,7 +51,7 @@ def run_api():
 
 if __name__ == "__main__":
     threading.Thread(target=run_api).start()
-    '''
+
 MY_USER_ID = 617673911940808706
 
 NORMAL_CHANNEL_ID = 1293206795677995041
