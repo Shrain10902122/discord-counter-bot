@@ -63,7 +63,7 @@ user_states = {}
 said_today = {}
 
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔…', '哦…', '217', '57', '170', '557', 'l70', '201', '515', '486']
+pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔…', '哦…', '217', '57', '170', '557', 'l70', '201', '515', '486', "我的翅膀"]
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
@@ -73,6 +73,7 @@ old2_keyword = ["老二"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 graduate_keyword = ["畢業", "卒業"]
 gay_keyword = ["甲"]
+jyajya_keyword = ["嘉", "伽"]
 
 def is_url(text):
     pattern = re.compile(
@@ -316,6 +317,10 @@ async def on_message(message):
     
     if any(char in clean_text for char in gay_keyword):
         await message.reply(f'@藤島食物語')
+
+    if any(char in clean_text for char in jyajya_keyword):
+        await message.reply(f'310110199701093724')
+
 
     # 確保指令也能處理
     await bot.process_commands(message)
