@@ -35,6 +35,8 @@ DIVINE_CHANNEL_ID = 1400686378156687480
 DETER_CHANNEL_ID = 1400885561186586826
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
+GUILD_ID = 1293206795677995038
+
 file201 = "https://imgur.com/7yl9WIC"
 file217 = "https://tenor.com/view/%E8%8A%B1%E5%AE%AE%E5%88%9D%E5%A5%88-hanamiya-niina-gif-3008444556989069684"
 file57 = "https://tenor.com/view/kona-tsukine-kann-kanna-hasunosora-miracra-park-love-live-gif-11488072278705324844"
@@ -225,22 +227,26 @@ async def rain_clock():
 async def clock201():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
-        await channel.send(f"201\n{file201}")
+        await channel.send(f"201")
+        await channel.send(file201)
 
 async def clock217():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
-        await channel.send(f"217\n{file217}")
+        await channel.send(f"217")
+        await channel.send(file217)
 
 async def clock507():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
-        await channel.send(f"57\n{file57}")
+        await channel.send(f"57")
+        await channel.send(file57)
 
 async def clock557():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
-        await channel.send(f"557\n{file557}")
+        await channel.send(f"557")
+        await channel.send(file557)
 
 @bot.event
 async def on_ready():
@@ -293,7 +299,7 @@ async def on_message(message):
         await message.reply(f'你再用驚嘆號試試看')
 
     if any(char in clean_text for char in pathetic_keyword) and not is_url(message.content):
-        guild = bot.get_guild(1293206795677995038) 
+        guild = bot.get_guild(GUILD_ID) 
         if guild is not None:
             ga = get(guild.emojis, name="word_ga")
             hopeless = get(guild.emojis, name="word_pathetic")
@@ -329,13 +335,13 @@ async def on_message(message):
         await message.reply(f'310110199701093724')
 
     if any(char in clean_text for char in hachyan_keyword):
-        await message.reply(f'👏👏👏👏👏 sumimi最高')
+        await message.reply(f'👏👏👏👏👏sumimi最高')
 
     if clean_text == "頑張るぞ":
         await message.reply(f'ちぇすとー!')
 
-    if "沙漏" in clean_text:
-        guild = bot.get_guild(1293206795677995038) 
+    if "沙漏" in clean_text and message.guild and message.guild.id == GUILD_ID:
+        guild = bot.get_guild(GUILD_ID) 
         sticker = get(guild.stickers, name="破沙漏")
         await message.reply(stickers=[sticker])
 
