@@ -91,7 +91,7 @@ async def send_birthday_messages():
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=17, minute=30, timezone=ZoneInfo("Asia/Tokyo")))
+    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=17, minute=35, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
 
 @bot.event
