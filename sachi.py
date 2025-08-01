@@ -59,6 +59,11 @@ DIVINE_CHANNEL_ID = 1400686378156687480
 DETER_CHANNEL_ID = 1400885561186586826
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
 
+file201 = "https://imgur.com/7yl9WIC"
+file217 = "https://tenor.com/view/%E8%8A%B1%E5%AE%AE%E5%88%9D%E5%A5%88-hanamiya-niina-gif-3008444556989069684"
+file57 = "https://tenor.com/view/kona-tsukine-kann-kanna-hasunosora-miracra-park-love-live-gif-11488072278705324844"
+file557 = "https://tenor.com/view/cocona-pat-cocona-nonaka-hasu-no-sora-cocona-hasu-no-sora-nassu-gif-17628539632931813881"
+
 user_states = {}
 said_today = {}
 
@@ -97,7 +102,7 @@ char_birthdays = {
     "葳恩·西部雅卡農・雌小鬼・瑪格麗特": "01-20",
     "ksks 中須霞": "01-23",
     "山田真綠聲優 小戶森穗花": "01-23",
-    "村野沙耶香聲優 野中心菜": "01-28",
+    "村野沙耶香聲優 野ここな": "01-28",
     "徒町小鈴聲優 葉山風花": "01-28",
     "朝香果林聲優 久保田未夢": "01-31",
     "東條希聲優 楠田亞衣奈": "02-01",
@@ -138,7 +143,7 @@ char_birthdays = {
     "鹿角聖良": "05-04",
     "山田真綠": "05-07",
     "椎名立希聲優 林鼓子": "05-15",
-    "葉月戀聲優 青山渚": "05-16",
+    "葉月戀聲優 青山なぎさ": "05-16",
     "小泉花陽久保ユリカ": "05-19",
     "ちゅけ 榆井希實": "05-21",
     "日野下．小兔子．大木頭．快去跟沙耶香唱素顏像素．吟子跟塞拉斯在爭奪的獎品．フラワー．花帆日野下花帆": "05-22",
@@ -164,29 +169,29 @@ char_birthdays = {
     "藪島朱音": "07-18",
     "宇宙No.1偶像 矢澤妮可": "07-22",
     "南小鳥聲優 內田彩": "07-23",
-    "鈴木愛奈": "07-23",
-    "高海千歌": "08-01",
+    "小原鞠莉聲優 鈴木愛奈": "07-23",
+    "普通怪獸高海千歌": "08-01",
     "果皇 高坂穗乃果": "08-03",
-    "法元明菜": "08-05",
+    "菜寶 法元明菜": "08-05",
     "鬼塚夏美": "08-07",
     "優木雪菜": "08-08",
-    "逢田梨香子": "08-08",
-    "聖澤悠奈": "08-11",
-    "齊藤朱夏": "08-16",
-    "高橋波爾卡": "08-18",
-    "月音瑚奈": "08-20",
-    "佐佐木琴子": "08-28",
-    "大澤瑠璃乃": "08-31",
-    "村上奈津實": "09-07",
+    "櫻內梨子聲優 逢田梨香子": "08-08",
+    "聖澤·パ·悠奈": "08-11",
+    "渡邊曜聲優 齊藤朱夏": "08-16",
+    "不會算8+7的高橋波爾卡": "08-18",
+    "藤島慈聲優 月音こな": "08-20",
+    "夕霧綴理聲優 佐佐木琴子": "08-28",
+    "聖女大澤瑠璃乃": "08-31",
+    "宮下愛聲優 村上奈津實": "09-07",
     "南小鳥": "09-12",
-    "櫻井陽菜": "09-17",
+    "百生吟子聲優 櫻井陽菜": "09-17",
     "櫻內梨子": "09-19",
-    "瀨古梨愛": "09-19",
-    "指出毬亞": "09-20",
+    "調布乃理子聲優 瀨古梨愛": "09-19",
+    "我毫無疑問 指出毬亞": "09-20",
     "黑澤露比": "09-21",
-    "春宮悠可里": "09-22",
-    "安養寺姬芽": "09-24",
-    "高槻加奈子": "09-25",
+    "舞台少女春宮悠可里": "09-22",
+    "吃瓜長頸鹿安養寺姬芽": "09-24",
+    "遠嫁印度的高槻加奈子": "09-25",
     "結那": "09-27",
     "平安名堇": "09-28",
     "伊達小百合": "09-30",
@@ -217,7 +222,7 @@ char_birthdays = {
     "鹿角理亞": "12-12",
     "三宅美羽": "12-14",
     "近江彼方": "12-16",
-    "藤島慈": "12-20",
+    "傲嬌高佔有慾超麻煩小女友藤島慈": "12-20",
     "楠木燈": "12-22",
     "佐藤日向": "12-23",
     "德井青空": "12-26",
@@ -241,6 +246,26 @@ async def rain_clock():
         if rain:
             await channel.send(f"{rain.mention}快去寫學妹們的文")
 
+async def clock201():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        await channel.send(f"201\n{file201}")
+
+async def clock217():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        await channel.send(f"217\n{file217}")
+
+async def clock507():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        await channel.send(f"57\n{file57}")
+
+async def clock557():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        await channel.send(f"557\n{file557}")
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
@@ -248,6 +273,10 @@ async def on_ready():
     JP_scheduler.start()
 
     TPE_scheduler.add_job(rain_clock, CronTrigger(hour=21, minute=0, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(clock201, CronTrigger(hour=2, minute=1, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(clock217, CronTrigger(hour=2, minute=17, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(clock507, CronTrigger(hour=5, minute=7, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(clock557, CronTrigger(hour=5, minute=57, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.start()
 
 @bot.event
