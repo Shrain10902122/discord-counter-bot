@@ -30,6 +30,7 @@ TPE_scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Taipei"))
 
 MY_USER_ID = 617673911940808706
 
+MY_CHANNEL_ID = 1401240626636259367
 NORMAL_CHANNEL_ID = 1293206795677995041
 DIVINE_CHANNEL_ID = 1400686378156687480
 DETER_CHANNEL_ID = 1400885561186586826
@@ -45,14 +46,14 @@ file557 = "https://tenor.com/view/cocona-pat-cocona-nonaka-hasu-no-sora-cocona-h
 
 user_states = {}
 said_today = {}
+waiting_users = {}
 
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['婆','可愛','舔', '跟我回家', '喔…', '哦…', '喔...', '哦...', '217', '57', '170', '557', 'l70', '201', '515', '486', "我的翅膀", "踩我"]
+pathetic_keyword = ['婆','的狗','舔', '跟我回家', '喔…', '哦…', '喔...', '哦...', '217', '57', '170', '557', 'l70', '201', '515', '486', "我的翅膀", "踩我"]
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
 deter_keyword = ["決定"]
-divine_keyword = ["我今天的運勢"]
 old2_keyword = ["老二"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 graduate_keyword = ["畢業", "卒業"]
@@ -208,14 +209,19 @@ char_birthdays = {
     "高橋波爾卡聲優 綾咲穗音": "12-31"
 }
 
-member_birthdays_birthdays = {
-    342989196828606464 : "01-31",
-    845248407386980372 : "03-24",
-    346283480969379840 : "03-24",
-    802528138088808448 : "03-25",
-    MY_USER_ID : "04-30",
-    459588716269142016 : "05-19",
-}
+member_birthdays = [
+    ["喔是喔真的假的啦嗚嗚嗚嗚嗚", 342989196828606464, "01-31"],
+    ["花梢大將軍", 364425411951853569, "03-15"],
+    ["大網紅繪師", 845248407386980372, "03-24"],
+    ["", 346283480969379840, "03-24"],
+    ["超可悲🐑🍔厄介廚", 802528138088808448, "03-25"],
+    ["", 261389698470117378, "04-06"],
+    ["我老公", MY_USER_ID, "04-30"],
+    ["風醬", 459588716269142016, "05-19"],
+    ["大文豪", 497031137177239563, "05-23"],
+    ["打野王", 811992937248194631, "05-31"],
+    ["大網紅", 496919016934211584, "09-05"]
+]
 
 async def send_birthday_messages():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
@@ -224,27 +230,24 @@ async def send_birthday_messages():
         if birthday == today:
             channel = bot.get_channel(BIRTHDAY_CHANNEL_ID)
             if channel:
-                await channel.send(f"🎉今天是{name}的生日，お誕生日おめでとう！🎂")
+                await channel.send(f"🎉 今天是{name}的生日，お誕生日おめでとう！ 🎂")
 
 async def send_member_birthday_messages():
     now = datetime.now(ZoneInfo("Asia/Taipei"))
     today = now.strftime("%m-%d")
-    for ID, birthday in member_birthdays.items():
+    for title, ID, birthday in member_birthdays:
         if birthday == today:
             channel = bot.get_channel(BIRTHDAY_CHANNEL_ID)
             if channel:
                 user = await bot.fetch_user(ID)
-                if ID == MY_USER_ID:
-                    await channel.send(f"🎉今天是我老公{user.mention}的生日，快來祝他生日快樂！🎂")
-                else:
-                    await channel.send(f"🎉今天是{user.mention}的生日，快來祝他生日快樂！🎂")
+                await channel.send(f"🎉 今天是{title} {user.mention} 的生日，快來祝他生日快樂！ 🎂")
 
 async def rain_clock():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
         rain = await bot.fetch_user(497031137177239563)
         if rain:
-            await channel.send(f"{rain.mention}快去寫學妹們的文")
+            await channel.send(f"{rain.mention} 快去寫學妹們的文")
 
 async def clock201():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
@@ -292,6 +295,24 @@ async def on_message(message):
 
     user_id = message.author.id
     channel_id = message.channel.id
+
+    if channel_id == MY_CHANNEL_ID:
+        if user_id in waiting_users:
+            try:
+                tar_channel_id = int(message.content)
+                tar_channel = bot.get_channel(tar_channel_id)
+                if tar_channel:
+                    original_content = waiting_users.pop(user_id)
+                    await tar_channel.send(original_content)
+                    await message.reply("Finish")
+                else:
+                    await message.reply("⚠️ 找不到頻道，請確認 ID 是否正確。")
+            except ValueError:
+                await message.reply("⚠️ 頻道 ID 必須是數字。")
+        else:
+            waiting_users[user_id] = message.content
+            await message.channel.send("Channel ID.")
+        return
 
     clean_text = remove_angle_brackets_content(message.content)
 
