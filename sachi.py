@@ -41,7 +41,7 @@ GUILD_ID = 1293206795677995038
 file201 = "https://imgur.com/7yl9WIC"
 file217 = "https://tenor.com/view/%E8%8A%B1%E5%AE%AE%E5%88%9D%E5%A5%88-hanamiya-niina-gif-3008444556989069684"
 file57 = "https://tenor.com/view/kona-tsukine-kann-kanna-hasunosora-miracra-park-love-live-gif-11488072278705324844"
-file515 = ""
+file515 = "https://tenor.com/zh-TW/view/kotoko-sasaki-kotoko-sasaki-tsuzuri-tsuzuri-yugiri-gif-17201047510544767822"
 file557 = "https://tenor.com/view/cocona-pat-cocona-nonaka-hasu-no-sora-cocona-hasu-no-sora-nassu-gif-17628539632931813881"
 
 user_states = {}
@@ -267,6 +267,12 @@ async def clock507():
         await channel.send(f"57")
         await channel.send(file57)
 
+async def clock515():
+    channel = bot.get_channel(NORMAL_CHANNEL_ID)
+    if channel:
+        await channel.send(f"515")
+        await channel.send(file515)
+
 async def clock557():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
@@ -284,6 +290,7 @@ async def on_ready():
     TPE_scheduler.add_job(clock201, CronTrigger(hour=2, minute=1, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.add_job(clock217, CronTrigger(hour=2, minute=17, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.add_job(clock507, CronTrigger(hour=5, minute=7, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(clock515, CronTrigger(hour=5, minute=15, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.add_job(clock557, CronTrigger(hour=5, minute=57, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.start()
 
