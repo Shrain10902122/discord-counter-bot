@@ -2,6 +2,7 @@ import threading
 
 import discord
 from discord.ext import commands, tasks
+from discord.errors import HTTPException
 import os
 from discord.utils import get
 import random
