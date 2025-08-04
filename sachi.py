@@ -35,6 +35,7 @@ NORMAL_CHANNEL_ID = 1293206795677995041
 DIVINE_CHANNEL_ID = 1400686378156687480
 DETER_CHANNEL_ID = 1400885561186586826
 BIRTHDAY_CHANNEL_ID = 1346860688127299654
+TEST_CHANNEL_ID = 1192433252028391517
 
 GUILD_ID = 1293206795677995038
 
@@ -280,9 +281,23 @@ async def clock557():
         await channel.send(f"557")
         await channel.send(file557)
 
+async def test():
+    channel = bot.get_channel(TEST_CHANNEL_ID)
+    if channel:
+        await channel.send("test")
+        try:
+            await channel.send("測試訊息")
+        except discord.HTTPException as e:
+            if e.status == 429:
+                retry_after = e.response.headers.get("Retry-After")
+                print(f"啟動時被限速了，請等 {retry_after} 秒後再發送")
+            else:
+                print(f"其他 HTTP 錯誤: {e}")
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
+    asyncio.create_task(test())
     JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
 
@@ -305,19 +320,6 @@ async def on_message(message):
     channel_id = message.channel.id
 
     if channel_id == MY_CHANNEL_ID:
-        try:
-            await message.channel.send("Hello")
-        except discord.HTTPException as e:
-            if e.status == 429:
-                retry_after = e.response.headers.get("Retry-After")
-                if retry_after:
-                    print(f"被限速了，請等 {retry_after} 秒後再發送")
-                    await asyncio.sleep(float(retry_after))
-                else:
-                    print("被限速，但沒有收到等待時間")
-                    await asyncio.sleep(10)  # 預設等10秒
-        return 
-
         if user_id in waiting_users:
             try:
                 tar_channel_id = int(message.content)
@@ -335,12 +337,10 @@ async def on_message(message):
             await message.channel.send("Channel ID.")
         return
 
-    return
-
     clean_text = remove_angle_brackets_content(message.content)
 
     if channel_id == DIVINE_CHANNEL_ID:
-        if any(char in message.content for char in divine_keyword):
+        if any(char in clean_text for char in divine_keyword):
             now = datetime.now(ZoneInfo("Asia/Taipei"))
             today = now.strftime("%m-%d")
 
@@ -353,10 +353,10 @@ async def on_message(message):
                 choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
                 reply = random.choice(choices)
                 await message.reply(reply)
-            return
+        return
             
     if channel_id == DETER_CHANNEL_ID:
-        if any(char in message.content for char in deter_keyword):
+        if any(char in clean_text for char in deter_keyword):
             choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
             reply = random.choice(choices)
             await message.reply(reply)
