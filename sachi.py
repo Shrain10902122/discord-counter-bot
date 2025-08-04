@@ -54,6 +54,7 @@ sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
 deter_keyword = ["決定"]
+divine_keyword = ["運勢"]
 old2_keyword = ["老二"]
 kan_keyword = ["Kan", "kan", "かん", "カン", "菅"]
 graduate_keyword = ["畢業", "卒業"]
@@ -304,6 +305,19 @@ async def on_message(message):
     channel_id = message.channel.id
 
     if channel_id == MY_CHANNEL_ID:
+        try:
+            await message.channel.send("Hello")
+        except discord.HTTPException as e:
+            if e.status == 429:
+                retry_after = e.response.headers.get("Retry-After")
+                if retry_after:
+                    print(f"被限速了，請等 {retry_after} 秒後再發送")
+                    await asyncio.sleep(float(retry_after))
+                else:
+                    print("被限速，但沒有收到等待時間")
+                    await asyncio.sleep(10)  # 預設等10秒
+        return 
+
         if user_id in waiting_users:
             try:
                 tar_channel_id = int(message.content)
@@ -321,23 +335,26 @@ async def on_message(message):
             await message.channel.send("Channel ID.")
         return
 
+    return
+
     clean_text = remove_angle_brackets_content(message.content)
 
     if channel_id == DIVINE_CHANNEL_ID:
-        now = datetime.now(ZoneInfo("Asia/Taipei"))
-        today = now.strftime("%m-%d")
+        if any(char in message.content for char in divine_keyword):
+            now = datetime.now(ZoneInfo("Asia/Taipei"))
+            today = now.strftime("%m-%d")
 
-        last_date = said_today.get(user_id)
+            last_date = said_today.get(user_id)
 
-        if last_date == today:
-            await message.reply("你問過了啦 (ノ｀Д´)ノ")
-        else:
-            said_today[user_id] = today
-            choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
-            reply = random.choice(choices)
-            await message.reply(reply)
-        return
-        
+            if last_date == today:
+                await message.reply("你問過了啦 (ノ｀Д´)ノ")
+            else:
+                said_today[user_id] = today
+                choices = ["大吉", "吉", "中吉", "小吉", "末吉", "凶", "大凶"]
+                reply = random.choice(choices)
+                await message.reply(reply)
+            return
+            
     if channel_id == DETER_CHANNEL_ID:
         if any(char in message.content for char in deter_keyword):
             choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
@@ -401,6 +418,7 @@ async def on_message(message):
 
     # 確保指令也能處理
     await bot.process_commands(message)
+
 
 # 啟動 bot
 bot.run(TOKEN)
