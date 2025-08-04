@@ -281,24 +281,10 @@ async def clock557():
     if channel:
         await channel.send(f"557")
         await channel.send(file557)
-
-async def test():
-    channel = bot.get_channel(TEST_CHANNEL_ID)
-    if channel:
-        await channel.send("test")
-        try:
-            await channel.send("測試訊息")
-        except discord.HTTPException as e:
-            if e.status == 429:
-                retry_after = e.response.headers.get("Retry-After")
-                print(f"啟動時被限速了，請等 {retry_after} 秒後再發送")
-            else:
-                print(f"其他 HTTP 錯誤: {e}")
-
+        
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    asyncio.create_task(test())
     JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
 
