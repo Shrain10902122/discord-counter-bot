@@ -43,7 +43,7 @@ GUILD_ID = 1293206795677995038
 file201 = "https://imgur.com/7yl9WIC"
 file217 = "https://tenor.com/view/%E8%8A%B1%E5%AE%AE%E5%88%9D%E5%A5%88-hanamiya-niina-gif-3008444556989069684"
 file57 = "https://tenor.com/view/kona-tsukine-kann-kanna-hasunosora-miracra-park-love-live-gif-11488072278705324844"
-file515 = "https://tenor.com/zh-TW/view/kotoko-sasaki-kotoko-sasaki-tsuzuri-tsuzuri-yugiri-gif-17201047510544767822"
+file515 = "https://tenor.com/view/kotoko-sasaki-kotoko-sasaki-tsuzuri-tsuzuri-yugiri-gif-17201047510544767822"
 file557 = "https://tenor.com/view/cocona-pat-cocona-nonaka-hasu-no-sora-cocona-hasu-no-sora-nassu-gif-17628539632931813881"
 
 user_states = {}
@@ -281,7 +281,7 @@ async def clock557():
     if channel:
         await channel.send(f"557")
         await channel.send(file557)
-        
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
