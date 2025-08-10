@@ -1,0 +1,5 @@
+run = "python3 sachi.py"
+language = "python3"
+
+[env]
+PYTHONPATH = "."
