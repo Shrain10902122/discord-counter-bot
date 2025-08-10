@@ -449,6 +449,7 @@ async def on_message(message):
 
 # 啟動 bot
 try:
+    print('hello')
     #bot.run(TOKEN)
 except HTTPException as e:
     if e.status == 429:
