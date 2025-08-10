@@ -453,7 +453,6 @@ try:
 except HTTPException as e:
     if e.status == 429:
         print("⚠️ Rate limited! Too many requests sent to Discord API.")
-        os.system("python restarter.py")
         os.system('kill 1')
     else:
         raise
