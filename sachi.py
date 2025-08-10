@@ -1,5 +1,5 @@
 import threading
-from backend import run_api
+#from backend import run_api
 
 import discord
 from discord.ext import commands, tasks
@@ -18,7 +18,7 @@ if os.getenv("RENDER") != "true":  # 判斷是否在 Render 環境中
     from dotenv import load_dotenv
     load_dotenv()
 
-threading.Thread(target=run_api, daemon=True).start()
+#threading.Thread(target=run_api, daemon=True).start()
 
 # 用你自己的 Token
 TOKEN = os.getenv("BOT_TOKEN")
@@ -453,6 +453,7 @@ try:
 except HTTPException as e:
     if e.status == 429:
         print("⚠️ Rate limited! Too many requests sent to Discord API.")
-        print(e.text)  # 印出 HTML 內容
+        system("python restarter.py")
+        system('kill 1')
     else:
         raise
