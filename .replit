@@ -1,5 +1,5 @@
-run = "python3 sachi.py"
-language = "python3"
+run = "python sachi.py"
+language = "python"
 
 [env]
 PYTHONPATH = "."
