@@ -1,5 +1,5 @@
 import threading
-from backend import run as backend_run
+from backend import run_api
 
 import discord
 from discord.ext import commands, tasks
@@ -54,7 +54,10 @@ said_today = {}
 waiting_users = {}
 
 target_chars = ['!', '！', '﹗']
-pathetic_keyword = ['婆','的狗','舔', '跟我回家', '喔…', '哦…', '喔...', '哦...', '217', '57', '170', '557', 'l70', '201', '515', '486', "我的翅膀", "踩我"]
+pathetic_keyword = [
+    '婆', '的狗', '舔', '跟我回家', '喔…', '哦…', '喔...', '哦...', '217', '57', '170',
+    '557', 'l70', '201', '515', '486', "我的翅膀", "踩我"
+]
 sachi_keyword = ['沙知']
 banana_keyword = ['蕉']
 ki_keyword = ['Ki', 'kI', 'KI', 'ki', 'き', 'キ']
@@ -70,12 +73,13 @@ hachyan_keyword = ["反田葉月", "哈醬"]
 
 def is_url(text):
     pattern = re.compile(
-        r'(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(/[^\s]*)?'
-    )
+        r'(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(/[^\s]*)?')
     return bool(pattern.search(text))
+
 
 def remove_angle_brackets_content(text):
     return re.sub(r"<[^>]*>", "", text)
+
 
 char_birthdays = {
     "ブッブーですわ! 黑澤黛雅": "01-01",
@@ -215,19 +219,18 @@ char_birthdays = {
     "高橋波爾卡聲優 綾咲穗音": "12-31"
 }
 
-member_birthdays = [
-    ["喔是喔真的假的啦嗚嗚嗚嗚嗚", 342989196828606464, "01-31"],
-    ["花梢大將軍", 364425411951853569, "03-15"],
-    ["大網紅繪師", 845248407386980372, "03-24"],
-    ["", 346283480969379840, "03-24"],
-    ["超可悲🐑🍔厄介廚", 802528138088808448, "03-25"],
-    ["", 261389698470117378, "04-06"],
-    ["我老公", MY_USER_ID, "04-30"],
-    ["風醬", 459588716269142016, "05-19"],
-    ["大文豪", 497031137177239563, "05-23"],
-    ["打野王", 811992937248194631, "05-31"],
-    ["大網紅", 496919016934211584, "09-05"]
-]
+member_birthdays = [["喔是喔真的假的啦嗚嗚嗚嗚嗚", 342989196828606464, "01-31"],
+                    ["花梢大將軍", 364425411951853569, "03-15"],
+                    ["大網紅繪師", 845248407386980372, "03-24"],
+                    ["", 346283480969379840, "03-24"],
+                    ["超可悲🐑🍔厄介廚", 802528138088808448, "03-25"],
+                    ["", 261389698470117378, "04-06"],
+                    ["我老公", MY_USER_ID, "04-30"],
+                    ["風醬", 459588716269142016, "05-19"],
+                    ["大文豪", 497031137177239563, "05-23"],
+                    ["打野王", 811992937248194631, "05-31"],
+                    ["大網紅", 496919016934211584, "09-05"]]
+
 
 async def send_birthday_messages():
     now = datetime.now(ZoneInfo("Asia/Tokyo"))
@@ -238,6 +241,7 @@ async def send_birthday_messages():
             if channel:
                 await channel.send(f"🎉 今天是{name}的生日，お誕生日おめでとう！ 🎂")
 
+
 async def send_member_birthday_messages():
     now = datetime.now(ZoneInfo("Asia/Taipei"))
     today = now.strftime("%m-%d")
@@ -246,7 +250,9 @@ async def send_member_birthday_messages():
             channel = bot.get_channel(BIRTHDAY_CHANNEL_ID)
             if channel:
                 user = await bot.fetch_user(ID)
-                await channel.send(f"🎉 今天是{title} {user.mention} 的生日，快來祝他生日快樂！ 🎂")
+                await channel.send(
+                    f"🎉 今天是{title} {user.mention} 的生日，快來祝他生日快樂！ 🎂")
+
 
 async def rain_clock():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
@@ -255,11 +261,13 @@ async def rain_clock():
         if rain:
             await channel.send(f"{rain.mention} 快去寫學妹們的文")
 
+
 async def clock201():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
         await channel.send(f"201")
         await channel.send(file201)
+
 
 async def clock217():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
@@ -267,11 +275,13 @@ async def clock217():
         await channel.send(f"217")
         await channel.send(file217)
 
+
 async def clock507():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
         await channel.send(f"57")
         await channel.send(file57)
+
 
 async def clock515():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
@@ -279,26 +289,45 @@ async def clock515():
         await channel.send(f"515")
         await channel.send(file515)
 
+
 async def clock557():
     channel = bot.get_channel(NORMAL_CHANNEL_ID)
     if channel:
         await channel.send(f"557")
         await channel.send(file557)
 
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
-    JP_scheduler.add_job(send_birthday_messages, CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Tokyo")))
+    JP_scheduler.add_job(
+        send_birthday_messages,
+        CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Tokyo")))
     JP_scheduler.start()
 
-    TPE_scheduler.add_job(send_member_birthday_messages, CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(rain_clock, CronTrigger(hour=21, minute=0, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(clock201, CronTrigger(hour=2, minute=1, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(clock217, CronTrigger(hour=2, minute=17, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(clock507, CronTrigger(hour=5, minute=7, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(clock515, CronTrigger(hour=5, minute=15, timezone=ZoneInfo("Asia/Taipei")))
-    TPE_scheduler.add_job(clock557, CronTrigger(hour=5, minute=57, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        send_member_birthday_messages,
+        CronTrigger(hour=0, minute=0, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        rain_clock,
+        CronTrigger(hour=21, minute=0, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        clock201,
+        CronTrigger(hour=2, minute=1, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        clock217,
+        CronTrigger(hour=2, minute=17, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        clock507,
+        CronTrigger(hour=5, minute=7, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        clock515,
+        CronTrigger(hour=5, minute=15, timezone=ZoneInfo("Asia/Taipei")))
+    TPE_scheduler.add_job(
+        clock557,
+        CronTrigger(hour=5, minute=57, timezone=ZoneInfo("Asia/Taipei")))
     TPE_scheduler.start()
+
 
 @bot.event
 async def on_message(message):
@@ -344,7 +373,7 @@ async def on_message(message):
                 reply = random.choice(choices)
                 await message.reply(reply)
         return
-            
+
     if channel_id == DETER_CHANNEL_ID:
         if any(char in clean_text for char in deter_keyword):
             choices = ["相信的心就是你的魔法", "哇～哈哈哈！我不覺得這是好選項呢！", "なるほど、なるほどね...你自己決定"]
@@ -356,14 +385,15 @@ async def on_message(message):
     if any(char in clean_text for char in target_chars):
         await message.reply(f'你再用驚嘆號試試看')
 
-    if any(char in clean_text for char in pathetic_keyword) and not is_url(message.content):
-        guild = bot.get_guild(GUILD_ID) 
+    if any(char in clean_text
+           for char in pathetic_keyword) and not is_url(message.content):
+        guild = bot.get_guild(GUILD_ID)
         if guild is not None:
             ga = get(guild.emojis, name="word_ga")
             hopeless = get(guild.emojis, name="word_pathetic")
             wake = get(guild.emojis, name="word_xing")
             await message.reply(f'{str(ga)}{str(hopeless)}{str(wake)}')
-    
+
     if any(char in clean_text for char in sachi_keyword):
         if user_id != MY_USER_ID:
             await message.reply(f'不許玩我')
@@ -371,21 +401,28 @@ async def on_message(message):
     if any(char in clean_text for char in banana_keyword):
         await message.reply(f'我老公怎麼你了')
 
-    if any(char in clean_text for char in ki_keyword) and not is_url(message.content):
-        await message.reply(f'眩耀夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ')
-    
+    if any(char in clean_text
+           for char in ki_keyword) and not is_url(message.content):
+        await message.reply(
+            f'眩耀夜行『ここじゃない』でUO折る人\n・気品がある\n・美男美女\n・頭がいい\n・リーダーシップがある\n・いい匂い\n・陽キャ\n\n『綺麗な夜だね』でUO折る人\n・バカ\n・アホ\n・マヌケ\n・オタンコナス\n・スットコドッコイ\n・臭い\n・陰キャ'
+        )
+
     if any(char in clean_text for char in old2_keyword):
         await message.reply(f'你才老二你全家都老二')
 
     if clean_text == "哇":
         await message.reply("わ わ わ わ わ わ ワールドカオス\n諸行 木暮 時雨 神楽 金剛山 翔襲叉")
-    
-    if any(char in clean_text for char in kan_keyword) and not is_url(message.content):
-        await message.reply("カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
+
+    if any(char in clean_text
+           for char in kan_keyword) and not is_url(message.content):
+        await message.reply(
+            "カンカンカンカン菅叶和\nいやいやいやいや菅まどか\n菅叶和 菅叶和\n始球式 パンツ見せ\n水着になれよ 写真集")
 
     if any(char in clean_text for char in graduate_keyword):
-        await message.reply("がんばれがんばれできるできる\n繋がり繋がり繋がりタイガー\n卒業卒業卒業後\nワンチャンあるだろ？いや、ないよ\nジャージャージャージャー友達で\n好き好き好き好きずっと好き\nリンクラのID教えてよ\n迷惑長文辞めておけ")
-    
+        await message.reply(
+            "がんばれがんばれできるできる\n繋がり繋がり繋がりタイガー\n卒業卒業卒業後\nワンチャンあるだろ？いや、ないよ\nジャージャージャージャー友達で\n好き好き好き好きずっと好き\nリンクラのID教えてよ\n迷惑長文辞めておけ"
+        )
+
     if any(char in clean_text for char in gay_keyword):
         await message.reply(f'@藤島食物語')
 
@@ -399,7 +436,7 @@ async def on_message(message):
         await message.reply(f'ちぇすとー!')
 
     if "沙漏" in clean_text and message.guild and message.guild.id == GUILD_ID:
-        guild = bot.get_guild(GUILD_ID) 
+        guild = bot.get_guild(GUILD_ID)
         sticker = get(guild.stickers, name="破沙漏")
         await message.reply(stickers=[sticker])
 

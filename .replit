@@ -1,5 +1,12 @@
 run = "python sachi.py"
 language = "python"
+modules = ["python-3.11"]
 
 [env]
 PYTHONPATH = "."
+
+[nix]
+
+[[ports]]
+localPort = 10000
+externalPort = 80
