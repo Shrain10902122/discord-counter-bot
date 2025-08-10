@@ -1,0 +1,16 @@
+name: Ping Replit Server
+
+# 觸發條件：每 5 分鐘執行一次，或者你手動觸發
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Replit URL
+        run: |
+          curl -s https://d2fe438e-4723-484e-8e45-166e0707f676-00-1whzn8iih7nxq.sisko.replit.dev/ > /dev/null
+          echo "Pinged Replit to keep it awake!"
