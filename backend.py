@@ -11,3 +11,6 @@ def read_root():
 
 def run_api():
     uvicorn.run(app, host="0.0.0.0", port=10000)
+
+if __name__ == "__main__":
+    threading.Thread(target=run_api).start()
