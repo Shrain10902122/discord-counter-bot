@@ -449,7 +449,7 @@ async def on_message(message):
 
 # 啟動 bot
 try:
-    bot.run(TOKEN)
+    #bot.run(TOKEN)
 except HTTPException as e:
     if e.status == 429:
         print("⚠️ Rate limited! Too many requests sent to Discord API.")
